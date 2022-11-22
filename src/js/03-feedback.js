@@ -1,21 +1,22 @@
 import throttle from 'lodash.throttle';
 
-
-const STORAGE_KEY = 'feedback-form-state';
-
-let formData = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
-
+// инициализация элементов формы
 const refs = {
   form: document.querySelector('.feedback-form'),
   email: document.querySelector('input'),
   message: document.querySelector('textarea'),
 };
+// ключ хранилища, переменная для элементов формы
+const STORAGE_KEY = 'feedback-form-state';
+const formData = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
 
-getFormOutput();
+// Проверка состояния хранилища 
 
+// отслеживание события input і submit импользуя throttle с задержкой 500ms
 refs.form.addEventListener('input', throttle(onSaveInput, 500));
 refs.form.addEventListener('submit', onSubmitForm);
 
+// функция события submit
 function onSubmitForm(e) {
   if (formData.email && formData.message) {
     e.preventDefault();
@@ -28,6 +29,7 @@ function onSubmitForm(e) {
   }
 }
 
+// функция события submit
 function onSaveInput(e) {
   const userMessage = e.target.value;
   const userEmail = e.target.name;
@@ -35,7 +37,8 @@ function onSaveInput(e) {
 
   localStorage.setItem(STORAGE_KEY, JSON.stringify(formData));
 }
-
+// функция проверки состояния хранилища 
+// если есть сохраненные данные, заповнюются ими поля формы. в противном случае - поля пустые
 function getFormOutput() {
   const savedFormData = JSON.parse(localStorage.getItem(STORAGE_KEY));
 
