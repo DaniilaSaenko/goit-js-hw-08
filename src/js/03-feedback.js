@@ -12,13 +12,24 @@ refs.form.addEventListener('submit', handleSubmit);
 const STORAGE_KEY = 'feedback-form-state';
 
 function onInput(e) {
-  const userMessage = e.target.value;
-  localStorage.setItem(STORAGE_KEY, userMessage);
+  const userMessage = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
+  userMessage[e.target.name] = e.target.value;
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(userMessage));
 }
 
+
+const saveLocalItems = localStorage.getItem(STORAGE_KEY);
+const parsSaveLocalItems = JSON.parse(saveLocalItems);
+
 function getLocalStorage() {
-  const saveLocalItems = localStorage.getItem(STORAGE_KEY);
-  if (saveLocalItems) {console.log(saveLocalItems);}
+  if (saveLocalItems) {
+    !parsSaveLocalItems.email
+      ? ''
+      : (refs.email.value = parsSaveLocalItems.email);
+    !parsSaveLocalItems.message
+      ? ''
+      : (refs.message.value = parsSaveLocalItems.message);
+  }
 }
 
 getLocalStorage();
