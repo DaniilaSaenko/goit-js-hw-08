@@ -10,7 +10,8 @@ const refs = {
 const STORAGE_KEY = 'feedback-form-state';
 const formData = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
 
-// Проверка состояния хранилища 
+// Проверка состояния хранилища
+getFormOutput();
 
 // отслеживание события input і submit импользуя throttle с задержкой 500ms
 refs.form.addEventListener('input', throttle(onSaveInput, 500));
@@ -29,7 +30,7 @@ function onSubmitForm(e) {
   }
 }
 
-// функция события submit
+// функция события input
 function onSaveInput(e) {
   const userMessage = e.target.value;
   const userEmail = e.target.name;
@@ -37,8 +38,8 @@ function onSaveInput(e) {
 
   localStorage.setItem(STORAGE_KEY, JSON.stringify(formData));
 }
-// функция проверки состояния хранилища 
-// если есть сохраненные данные, заповнюются ими поля формы. в противном случае - поля пустые
+// функция проверки состояния хранилища
+// если есть сохраненные данные, заполняются ими поля формы. в противном случае - поля пустые
 function getFormOutput() {
   const savedFormData = JSON.parse(localStorage.getItem(STORAGE_KEY));
 
