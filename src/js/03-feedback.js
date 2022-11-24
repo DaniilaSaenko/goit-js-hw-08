@@ -22,7 +22,6 @@ function onFormSubmit(e) {
   if (selectedFields.email && selectedFields.message) {
     e.preventDefault();
     e.currentTarget.reset();
-    /*    console.log(JSON.parse(localStorage.getItem(STORAGE_KEY))); */
     localStorage.removeItem(STORAGE_KEY);
     selectedFields = {};
   } else {
@@ -31,10 +30,9 @@ function onFormSubmit(e) {
 }
 
 function getFormOutput() {
-  let persistedFields = localStorage.getItem(STORAGE_KEY);
-  if (persistedFields) {
-    persistedFields = JSON.parse(persistedFields);
-    Object.entries(persistedFields).forEach(([name, value]) => {
+  let savedFormData = JSON.parse(localStorage.getItem(STORAGE_KEY));
+  if (savedFormData) {
+    Object.entries(savedFormData).forEach(([name, value]) => {
       selectedFields[name] = value;
       form.elements[name].value = value;
     });
