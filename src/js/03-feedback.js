@@ -1,48 +1,42 @@
 import throttle from 'lodash.throttle';
 
-// инициализация элементов формы
-const refs = {
-  form: document.querySelector('.feedback-form'),
-  email: document.querySelector('input'),
-  message: document.querySelector('textarea'),
-};
-// ключ хранилища, переменная для элементов формы
+// sem@gmail.com
 const STORAGE_KEY = 'feedback-form-state';
-const formData = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
 
-// Проверка состояния хранилища
+const form = document.querySelector('.feedback-form');
+let selectedFields = {};
+
 getFormOutput();
 
-// отслеживание события input і submit импользуя throttle с задержкой 500ms
-refs.form.addEventListener('input', throttle(onSaveInput, 500));
-refs.form.addEventListener('submit', onSubmitForm);
+form.addEventListener(
+  'input',
+  throttle(e => {
+    selectedFields[e.target.name] = e.target.value;
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(selectedFields));
+  }, 500)
+);
 
-// функция события input
-function onSaveInput(e) {
- formData[e.target.name] = e.target.value;
+form.addEventListener('submit', onFormSubmit);
 
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(formData));
-}
-// функция проверки состояния хранилища
-// если есть сохраненные данные, заполняются ими поля формы. в противном случае - поля пустые
-function getFormOutput() {
-  const savedFormData = JSON.parse(localStorage.getItem(STORAGE_KEY));
-
-  if (savedFormData) {
-    refs.email.value = savedFormData.email || '';
-    refs.message.value = savedFormData.message || '';
+function onFormSubmit(e) {
+  if (selectedFields.email && selectedFields.message) {
+    e.preventDefault();
+    e.currentTarget.reset();
+    /*    console.log(JSON.parse(localStorage.getItem(STORAGE_KEY))); */
+    localStorage.removeItem(STORAGE_KEY);
+    selectedFields = {};
+  } else {
+    alert('Заполните все поля, пожалуйста!');
   }
 }
 
-// функция события submit
-function onSubmitForm(e) {
-  if (formData.email && formData.message) {
-    e.preventDefault();
-    e.currentTarget.reset();
-    console.log(JSON.parse(localStorage.getItem(STORAGE_KEY)));
-    localStorage.removeItem(STORAGE_KEY);
-    formData = {};
-  } else {
-    alert('Заполните все поля, пожалуйста!');
+function getFormOutput() {
+  let persistedFields = localStorage.getItem(STORAGE_KEY);
+  if (persistedFields) {
+    persistedFields = JSON.parse(persistedFields);
+    Object.entries(persistedFields).forEach(([name, value]) => {
+      selectedFields[name] = value;
+      form.elements[name].value = value;
+    });
   }
 }
