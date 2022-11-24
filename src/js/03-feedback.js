@@ -8,14 +8,7 @@ let selectedFields = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
 
 getFormOutput();
 
-form.addEventListener(
-  'input',
-  throttle(e => {
-    selectedFields[e.target.name] = e.target.value;
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(selectedFields));
-  }, 500)
-);
-
+form.addEventListener('input', throttle(onSaveInput, 500));
 form.addEventListener('submit', onFormSubmit);
 
 function onFormSubmit(e) {
@@ -30,6 +23,10 @@ function onFormSubmit(e) {
   }
 }
 
+function onSaveInput(e) {
+selectedFields[e.target.name] = e.target.value;
+localStorage.setItem(STORAGE_KEY, JSON.stringify(selectedFields));
+}
 function getFormOutput() {
   if (selectedFields) {
     Object.entries(selectedFields).forEach(([name, value]) => {
