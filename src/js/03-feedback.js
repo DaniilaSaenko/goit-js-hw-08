@@ -13,19 +13,22 @@ form.addEventListener('submit', onFormSubmit);
 
 function onFormSubmit(e) {
   let savedFormData = Object.values(selectedFields);
-  if (!savedFormData.includes('')) {
-    e.preventDefault();
-    e.currentTarget.reset();
-    localStorage.removeItem(STORAGE_KEY);
-    selectedFields = {};
-  } else {
+  e.preventDefault();
+  e.currentTarget.reset();
+  console.log(selectedFields);
+  localStorage.removeItem(STORAGE_KEY);
+  /*    selectedFields = {}; */
+
+  if (savedFormData.includes('')) {
     alert('Заполните все поля, пожалуйста!');
   }
+
+  
 }
 
 function onSaveInput(e) {
-selectedFields[e.target.name] = e.target.value;
-localStorage.setItem(STORAGE_KEY, JSON.stringify(selectedFields));
+  selectedFields[e.target.name] = e.target.value;
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(selectedFields));
 }
 function getFormOutput() {
   if (selectedFields) {
