@@ -13,12 +13,13 @@ form.addEventListener('submit', onFormSubmit);
 
 function onFormSubmit(e) {
   let savedFormData = Object.values(selectedFields);
-  if (!savedFormData.includes('')) {
+  console.log(selectedFields);
+  if (!savedFormData.includes('') && savedFormData.length !== 0) {
     e.preventDefault();
     e.currentTarget.reset();
-    console.log(selectedFields);
+/*     console.log('3', selectedFields); */
     localStorage.removeItem(STORAGE_KEY);
-    /*    selectedFields = {}; */
+    selectedFields = {};
   } else {
     alert('Заполните все поля, пожалуйста!');
   }
