@@ -13,17 +13,15 @@ form.addEventListener('submit', onFormSubmit);
 
 function onFormSubmit(e) {
   let savedFormData = Object.values(selectedFields);
-  e.preventDefault();
-  e.currentTarget.reset();
-  console.log(selectedFields);
-  localStorage.removeItem(STORAGE_KEY);
-  /*    selectedFields = {}; */
-
-  if (savedFormData.includes('')) {
+  if (!savedFormData.includes('')) {
+    e.preventDefault();
+    e.currentTarget.reset();
+    console.log(selectedFields);
+    localStorage.removeItem(STORAGE_KEY);
+    /*    selectedFields = {}; */
+  } else {
     alert('Заполните все поля, пожалуйста!');
   }
-
-  
 }
 
 function onSaveInput(e) {

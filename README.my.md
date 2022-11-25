@@ -25,4 +25,6 @@ https://github.com/DaniilaSaenko/goit-js-hw-08.git (push)
 
 git add .
 
+git commit -m "DZ-8"
+
 git push origin main
